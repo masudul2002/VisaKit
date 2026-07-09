@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0-alpha] - 2026-07-09
+
+### Added
+- Reusable, generic Field Mapping Engine decoupled from hardcoded web selectors.
+- Built alias registry (`FieldRegistry.ts`) and fuzzy normalization utility (`Normalizer.ts`).
+- Created matching elements (`AttributeMatcher.ts`, `LabelMatcher.ts`, `PlaceholderMatcher.ts`) handling name, id, autocomplete, labels, placeholders, and aria-labels.
+- Refactored `FieldMapper` to execute the new 6-priority checklist order.
+- Refactored `ValueResolver` to delegate values formatting to the new generic `Resolver` module.
+- Created `docs/FIELD_MAPPING_ENGINE.md` architectural reference.
+
 ## [0.4.0-alpha] - 2026-07-09
 
 ### Added
