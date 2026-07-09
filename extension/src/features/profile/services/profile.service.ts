@@ -1,3 +1,7 @@
+/**
+ * Profile service for managing visa applicant profiles.
+ * Stores data locally in Chrome Extension storage.
+ */
 import { VisaProfile } from '../types/profile';
 import { storageService } from './storage.service';
 
