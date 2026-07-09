@@ -31,6 +31,8 @@ const initialFormState: Omit<VisaProfile, 'id' | 'isDefault'> = {
   city: '',
   address: '',
   postalCode: '',
+  category: 'Tourist',
+  tags: [],
 };
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({ profile, onSubmit, onCancel }) => {
@@ -99,6 +101,59 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({ profile, onSubmit, onC
             3. Contact & Address Details
           </h3>
           <ContactFormSection data={formData} errors={errors} onChange={handleChange} />
+        </div>
+
+        {/* Section 4: Classification */}
+        <div className="flex flex-col gap-4 border-t border-slate-900 pt-6">
+          <h3 className="text-sm font-bold text-blue-500 uppercase tracking-wider select-none">
+            4. Profile Classification
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="category"
+                className="text-xs font-semibold text-slate-400 uppercase tracking-wider"
+              >
+                Category
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category || 'Tourist'}
+                onChange={handleChange}
+                className="bg-slate-950 border border-slate-900 rounded-xl px-4 py-3 text-sm text-slate-200 outline-none focus:border-blue-500/50 cursor-pointer"
+              >
+                <option value="Tourist">Tourist</option>
+                <option value="Business">Business</option>
+                <option value="Medical">Medical</option>
+                <option value="Employment">Employment</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="tagsInput"
+                className="text-xs font-semibold text-slate-400 uppercase tracking-wider"
+              >
+                Tags (Comma-separated)
+              </label>
+              <input
+                id="tagsInput"
+                type="text"
+                value={(formData.tags || []).join(', ')}
+                onChange={(e) => {
+                  const tagList = e.target.value
+                    .split(',')
+                    .map((t) => t.trim())
+                    .filter((t) => t.length > 0);
+                  setFormData((prev) => ({ ...prev, tags: tagList }));
+                }}
+                placeholder="e.g. Urgent, Personal, Family"
+                className="bg-slate-950 border border-slate-900 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-700 outline-none focus:border-blue-500/50"
+              />
+            </div>
+          </div>
         </div>
       </div>
 

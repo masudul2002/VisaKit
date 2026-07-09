@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { ProfileDashboard } from '../features/profile/pages/ProfileDashboard';
 import { SettingsPage } from '../features/settings/pages/SettingsPage';
+import { ActivityLog } from '../features/autofill/components/ActivityLog';
+import { StorageInspectorPanel } from '../features/settings/components/StorageInspectorPanel';
 import '../index.css';
 
 export const OptionsApp: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'profiles' | 'settings'>('profiles');
+  const [activeTab, setActiveTab] = useState<'profiles' | 'settings' | 'history' | 'inspector'>(
+    'profiles'
+  );
 
   return (
     <div className="flex min-h-screen bg-slate-950 text-slate-100 font-sans">
@@ -62,12 +66,53 @@ export const OptionsApp: React.FC = () => {
             </svg>
             Settings & Preferences
           </button>
+
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-3 transition-colors cursor-pointer ${
+              activeTab === 'history'
+                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10'
+                : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+            }`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            Activity History Log
+          </button>
+
+          <button
+            onClick={() => setActiveTab('inspector')}
+            className={`px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-3 transition-colors cursor-pointer ${
+              activeTab === 'inspector'
+                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10'
+                : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+            }`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Storage Inspector
+          </button>
         </nav>
       </aside>
 
       {/* Main Content Pane */}
       <main className="flex-1 flex flex-col min-h-screen overflow-y-auto bg-slate-955">
-        {activeTab === 'profiles' ? <ProfileDashboard /> : <SettingsPage />}
+        {activeTab === 'profiles' && <ProfileDashboard />}
+        {activeTab === 'settings' && <SettingsPage />}
+        {activeTab === 'history' && <ActivityLog />}
+        {activeTab === 'inspector' && <StorageInspectorPanel />}
       </main>
     </div>
   );

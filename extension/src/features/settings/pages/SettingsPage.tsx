@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSettings } from '../hooks/useSettings';
 import { profileService } from '../../profile/services/profile.service';
 import { exportService } from '../../profile/services/export.service';
@@ -8,6 +8,62 @@ import { backupService } from '../../profile/services/backup.service';
 export const SettingsPage: React.FC = () => {
   const { settings, isLoading, error, updateSettings, resetSettings } = useSettings();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [isEncrypted, setIsEncrypted] = useState<boolean>(false);
+  const [passcode, setPasscode] = useState<string>('');
+  const [passcodeConfirm, setPasscodeConfirm] = useState<string>('');
+  const [cryptoError, setCryptoError] = useState<string | null>(null);
+  const [cryptoSuccess, setCryptoSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkEncryption = async () => {
+      const enc = await profileService.isEncrypted();
+      setIsEncrypted(enc);
+    };
+    checkEncryption();
+  }, []);
+
+  const handleEnableEncryption = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCryptoError(null);
+    setCryptoSuccess(null);
+    if (!passcode.trim()) {
+      setCryptoError('Passcode cannot be empty.');
+      return;
+    }
+    if (passcode !== passcodeConfirm) {
+      setCryptoError('Passcodes do not match.');
+      return;
+    }
+    try {
+      await profileService.setupEncryption(passcode);
+      setIsEncrypted(true);
+      setPasscode('');
+      setPasscodeConfirm('');
+      setCryptoSuccess('Profiles successfully encrypted with Master Passcode!');
+    } catch {
+      setCryptoError('Failed to encrypt storage database.');
+    }
+  };
+
+  const handleDisableEncryption = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCryptoError(null);
+    setCryptoSuccess(null);
+    const success = await profileService.unlock(passcode);
+    if (!success) {
+      setCryptoError('Incorrect passcode.');
+      return;
+    }
+    try {
+      await profileService.removeEncryption();
+      setIsEncrypted(false);
+      setPasscode('');
+      setCryptoSuccess('Storage successfully decrypted to plain JSON.');
+    } catch {
+      setCryptoError('Failed to decrypt storage database.');
+    }
+  };
 
   if (isLoading || !settings) {
     return (
@@ -146,7 +202,7 @@ export const SettingsPage: React.FC = () => {
                 type="checkbox"
                 checked={settings.general.autoLoadLastActiveProfile}
                 onChange={() => handleToggle('general', 'autoLoadLastActiveProfile')}
-                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-blue-600 focus:ring-blue-500 focus:ring-offset-slate-950 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-800 bg-slate-955 text-blue-600 focus:ring-blue-500 focus:ring-offset-slate-950 cursor-pointer"
               />
             </div>
           </div>
@@ -175,7 +231,7 @@ export const SettingsPage: React.FC = () => {
                 type="checkbox"
                 checked={settings.appearance.enableAnimations}
                 onChange={() => handleToggle('appearance', 'enableAnimations')}
-                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-800 bg-slate-955 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
             </div>
           </div>
@@ -191,7 +247,7 @@ export const SettingsPage: React.FC = () => {
                 type="checkbox"
                 checked={settings.autofill.enableSmartMatching}
                 onChange={() => handleToggle('autofill', 'enableSmartMatching')}
-                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-800 bg-slate-955 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
             </div>
 
@@ -201,7 +257,7 @@ export const SettingsPage: React.FC = () => {
                 type="checkbox"
                 checked={settings.autofill.highlightFilledFields}
                 onChange={() => handleToggle('autofill', 'highlightFilledFields')}
-                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-800 bg-slate-955 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
             </div>
 
@@ -211,7 +267,7 @@ export const SettingsPage: React.FC = () => {
                 type="checkbox"
                 checked={settings.autofill.scrollToFirstField}
                 onChange={() => handleToggle('autofill', 'scrollToFirstField')}
-                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-800 bg-slate-955 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
             </div>
 
@@ -221,9 +277,73 @@ export const SettingsPage: React.FC = () => {
                 type="checkbox"
                 checked={settings.autofill.showSummary}
                 onChange={() => handleToggle('autofill', 'showSummary')}
-                className="w-4 h-4 rounded border-slate-800 bg-slate-950 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-800 bg-slate-955 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
             </div>
+          </div>
+        </div>
+
+        {/* Security Settings */}
+        <div className="p-6 bg-slate-900/30 border border-slate-900 rounded-[20px] flex flex-col gap-4">
+          <h3 className="font-extrabold text-sm text-white select-none">
+            Vault Security (Encryption)
+          </h3>
+          <div className="flex flex-col gap-3 text-xs">
+            {cryptoError && (
+              <span className="text-[10px] font-bold text-red-500">{cryptoError}</span>
+            )}
+            {cryptoSuccess && (
+              <span className="text-[10px] font-bold text-emerald-500">{cryptoSuccess}</span>
+            )}
+
+            {isEncrypted ? (
+              <form onSubmit={handleDisableEncryption} className="flex flex-col gap-2">
+                <span className="text-slate-400 leading-normal">
+                  Your profiles database is currently encrypted. Enter your passcode below to decrypt
+                  and disable security.
+                </span>
+                <input
+                  type="password"
+                  placeholder="Master passcode..."
+                  value={passcode}
+                  onChange={(e) => setPasscode(e.target.value)}
+                  className="bg-slate-950 border border-slate-900 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-blue-500/50"
+                />
+                <button
+                  type="submit"
+                  className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl text-xs transition-colors cursor-pointer border border-transparent"
+                >
+                  Disable Encryption
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleEnableEncryption} className="flex flex-col gap-2">
+                <span className="text-slate-400 leading-normal">
+                  Lock your passport numbers and personal data. Setting a passcode encrypts storage
+                  using AES-GCM.
+                </span>
+                <input
+                  type="password"
+                  placeholder="New master passcode..."
+                  value={passcode}
+                  onChange={(e) => setPasscode(e.target.value)}
+                  className="bg-slate-950 border border-slate-900 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-blue-500/50"
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm passcode..."
+                  value={passcodeConfirm}
+                  onChange={(e) => setPasscodeConfirm(e.target.value)}
+                  className="bg-slate-950 border border-slate-900 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-blue-500/50"
+                />
+                <button
+                  type="submit"
+                  className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-xl text-xs transition-all cursor-pointer"
+                >
+                  Enable Storage Encryption
+                </button>
+              </form>
+            )}
           </div>
         </div>
 
@@ -281,7 +401,7 @@ export const SettingsPage: React.FC = () => {
             </div>
             <div className="flex justify-between">
               <span>Current Version</span>
-              <span className="font-bold text-slate-200">v0.4.0-alpha</span>
+              <span className="font-bold text-slate-200">v1.1.0</span>
             </div>
             <div className="flex justify-between">
               <span>License</span>

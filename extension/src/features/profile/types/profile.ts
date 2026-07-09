@@ -1,6 +1,9 @@
 export interface VisaProfile {
   id: string;
   isDefault: boolean;
+  category?: 'Tourist' | 'Business' | 'Medical' | 'Employment' | 'Other';
+  isFavorite?: boolean;
+  tags?: string[];
   
   // Personal Information
   surname: string;

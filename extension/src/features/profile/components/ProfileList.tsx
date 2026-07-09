@@ -9,6 +9,7 @@ interface ProfileListProps {
   onDuplicate: (id: string) => void;
   onSetActive: (id: string) => void;
   onExport: (profile: VisaProfile) => void;
+  onToggleFavorite: (id: string) => void;
 }
 
 export const ProfileList: React.FC<ProfileListProps> = ({
@@ -18,6 +19,7 @@ export const ProfileList: React.FC<ProfileListProps> = ({
   onDuplicate,
   onSetActive,
   onExport,
+  onToggleFavorite,
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -30,6 +32,7 @@ export const ProfileList: React.FC<ProfileListProps> = ({
           onDuplicate={onDuplicate}
           onSetActive={onSetActive}
           onExport={onExport}
+          onToggleFavorite={onToggleFavorite}
         />
       ))}
     </div>

@@ -8,6 +8,7 @@ interface ProfileCardProps {
   onDuplicate: (id: string) => void;
   onSetActive: (id: string) => void;
   onExport: (profile: VisaProfile) => void;
+  onToggleFavorite: (id: string) => void;
 }
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -17,6 +18,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   onDuplicate,
   onSetActive,
   onExport,
+  onToggleFavorite,
 }) => {
   return (
     <div
@@ -30,12 +32,28 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       <div className="flex justify-between items-start gap-4">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => onToggleFavorite(profile.id)}
+              className={`text-base font-bold transition-colors cursor-pointer leading-none ${
+                profile.isFavorite
+                  ? 'text-amber-500 hover:text-amber-400'
+                  : 'text-slate-600 hover:text-slate-400'
+              }`}
+              title={profile.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+            >
+              ★
+            </button>
             <h3 className="font-bold text-base text-white">
               {profile.surname}, {profile.givenName}
             </h3>
             {profile.isDefault && (
               <span className="px-2.5 py-0.5 bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold text-blue-400 rounded-full">
                 Active
+              </span>
+            )}
+            {profile.category && (
+              <span className="px-2.5 py-0.5 bg-purple-500/10 border border-purple-500/20 text-[9px] font-extrabold text-purple-400 rounded-full uppercase tracking-wider">
+                {profile.category}
               </span>
             )}
           </div>
@@ -77,6 +95,19 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           <span className="font-semibold text-slate-200 mt-0.5 truncate">{profile.email}</span>
         </div>
       </div>
+
+      {profile.tags && profile.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 px-0.5">
+          {profile.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-2 py-0.5 bg-slate-950 border border-slate-900 text-[9px] text-slate-400 font-bold rounded-md uppercase"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-3 shrink-0">

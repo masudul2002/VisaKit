@@ -13,18 +13,47 @@ export const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isAutofilling, setIsAutofilling] = useState<boolean>(false);
 
+  const [isLocked, setIsLocked] = useState<boolean>(false);
+  const [passcode, setPasscode] = useState<string>('');
+  const [unlockError, setUnlockError] = useState<string | null>(null);
+
+  const loadActiveProfile = async () => {
+    try {
+      const all = await profileService.getAllProfiles();
+      const active = all.find((p) => p.isDefault) || null;
+      setActiveProfile(active);
+    } catch (err) {
+      console.error('Failed to load profiles inside popup context:', err);
+    }
+  };
+
+  const checkLockStatus = async () => {
+    const isEnc = await profileService.isEncrypted();
+    const sessionKey = profileService.getSessionPasscode();
+    if (isEnc && !sessionKey) {
+      setIsLocked(true);
+    } else {
+      setIsLocked(false);
+      loadActiveProfile();
+    }
+  };
+
   useEffect(() => {
-    const loadActiveProfile = async () => {
-      try {
-        const all = await profileService.getAllProfiles();
-        const active = all.find((p) => p.isDefault) || null;
-        setActiveProfile(active);
-      } catch (err) {
-        console.error('Failed to load profiles inside popup context:', err);
-      }
-    };
-    loadActiveProfile();
+    checkLockStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleUnlock = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUnlockError(null);
+    const success = await profileService.unlock(passcode);
+    if (success) {
+      setIsLocked(false);
+      loadActiveProfile();
+    } else {
+      setUnlockError('Incorrect passcode. Please try again.');
+    }
+  };
 
   const handleOpenOptions = () => {
     if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.openOptionsPage) {
@@ -53,6 +82,52 @@ export const App: React.FC = () => {
   const handleActionPlaceholder = (actionName: string) => {
     console.log(`VisaKit action triggered: ${actionName}`);
   };
+
+  if (isLocked) {
+    return (
+      <Layout>
+        <Container>
+          <Header />
+          <form
+            onSubmit={handleUnlock}
+            className="flex-1 flex flex-col justify-center px-6 py-8 gap-4 text-center select-none"
+          >
+            <div className="flex flex-col gap-1.5">
+              <span className="text-2xl mb-1">🔒</span>
+              <h3 className="font-extrabold text-sm text-slate-800 dark:text-slate-200">
+                Storage Encrypted
+              </h3>
+              <p className="text-[11px] text-slate-500 leading-relaxed max-w-[220px] mx-auto">
+                Enter your master passcode to unlock your saved visa profiles database.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <input
+                type="password"
+                placeholder="Passcode..."
+                value={passcode}
+                onChange={(e) => setPasscode(e.target.value)}
+                className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-center outline-none focus:border-blue-500/50"
+                autoFocus
+              />
+              {unlockError && (
+                <span className="text-[9px] font-bold text-red-500">{unlockError}</span>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-xl text-xs shadow-md shadow-blue-500/10 transition-all cursor-pointer"
+            >
+              Unlock Vault
+            </button>
+          </form>
+          <Footer />
+        </Container>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

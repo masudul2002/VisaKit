@@ -1,2 +1,1 @@
-// Autofill service entrypoint
-export {};
+export * from './activity.service';

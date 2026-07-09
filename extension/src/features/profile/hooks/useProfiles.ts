@@ -5,6 +5,9 @@ import { profileService } from '../services/profile.service';
 export const useProfiles = () => {
   const [profiles, setProfiles] = useState<VisaProfile[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [categoryFilter, setCategoryFilter] = useState<string>('All');
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
+  const [tagFilter, setTagFilter] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,6 +52,12 @@ export const useProfiles = () => {
     }
   };
 
+  const toggleFavorite = async (id: string) => {
+    const target = profiles.find((p) => p.id === id);
+    if (!target) return;
+    await updateProfile(id, { isFavorite: !target.isFavorite });
+  };
+
   const deleteProfile = async (id: string) => {
     setError(null);
     try {
@@ -89,26 +98,51 @@ export const useProfiles = () => {
   };
 
   const filteredProfiles = useMemo(() => {
-    if (!searchQuery.trim()) return profiles;
-    const query = searchQuery.toLowerCase().trim();
-    return profiles.filter(
-      (p) =>
-        p.surname.toLowerCase().includes(query) ||
-        p.givenName.toLowerCase().includes(query) ||
-        p.passportNumber.toLowerCase().includes(query) ||
-        p.email.toLowerCase().includes(query)
-    );
-  }, [profiles, searchQuery]);
+    let result = profiles;
+
+    if (showFavoritesOnly) {
+      result = result.filter((p) => p.isFavorite);
+    }
+
+    if (categoryFilter !== 'All') {
+      result = result.filter((p) => p.category === categoryFilter);
+    }
+
+    if (tagFilter.trim()) {
+      const tagQuery = tagFilter.toLowerCase().trim();
+      result = result.filter((p) => p.tags?.some((t) => t.toLowerCase().includes(tagQuery)));
+    }
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      result = result.filter(
+        (p) =>
+          p.surname.toLowerCase().includes(query) ||
+          p.givenName.toLowerCase().includes(query) ||
+          p.passportNumber.toLowerCase().includes(query) ||
+          p.email.toLowerCase().includes(query)
+      );
+    }
+
+    return result;
+  }, [profiles, searchQuery, categoryFilter, showFavoritesOnly, tagFilter]);
 
   return {
     profiles,
     filteredProfiles,
     searchQuery,
     setSearchQuery,
+    categoryFilter,
+    setCategoryFilter,
+    showFavoritesOnly,
+    setShowFavoritesOnly,
+    tagFilter,
+    setTagFilter,
     isLoading,
     error,
     addProfile,
     updateProfile,
+    toggleFavorite,
     deleteProfile,
     duplicateProfile,
     setActiveProfile,

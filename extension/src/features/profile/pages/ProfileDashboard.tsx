@@ -20,10 +20,17 @@ export const ProfileDashboard: React.FC = () => {
     filteredProfiles,
     searchQuery,
     setSearchQuery,
+    categoryFilter,
+    setCategoryFilter,
+    showFavoritesOnly,
+    setShowFavoritesOnly,
+    tagFilter,
+    setTagFilter,
     isLoading,
     error,
     addProfile,
     updateProfile,
+    toggleFavorite,
     deleteProfile,
     duplicateProfile,
     setActiveProfile,
@@ -181,6 +188,12 @@ export const ProfileDashboard: React.FC = () => {
           <ProfileToolbar
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
+            categoryFilter={categoryFilter}
+            onCategoryChange={setCategoryFilter}
+            showFavoritesOnly={showFavoritesOnly}
+            onFavoritesToggle={() => setShowFavoritesOnly(!showFavoritesOnly)}
+            tagFilter={tagFilter}
+            onTagChange={setTagFilter}
             onNewProfile={handleNewProfileClick}
             showCreateButton={filteredProfiles.length > 0 || searchQuery !== ''}
             onExportAll={handleExportAll}
@@ -197,6 +210,7 @@ export const ProfileDashboard: React.FC = () => {
               onDuplicate={duplicateProfile}
               onSetActive={setActiveProfile}
               onExport={exportService.exportSingleProfile}
+              onToggleFavorite={toggleFavorite}
             />
           )}
         </div>
