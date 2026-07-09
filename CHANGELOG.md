@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0-alpha] - 2026-07-09
+
+### Added
+- MVP Autofill Engine inside content script sandbox.
+- Priority matching strategy checking Name, ID, Autocomplete tags, labels, and placeholders.
+- Date format translation resolver (e.g. converting `YYYY-MM-DD` profiles into `DD/MM/YYYY` text inputs).
+- Synthetic DOM event triggers (`input`, `change`, `click`, `blur`) to support modern SPA frameworks.
+- Popup-to-tab messaging structure triggering forms automation.
+- Result report dialog overlay component (`AutofillResultModal.tsx`) showing execution stats in the popup.
+- Technical documentation under `docs/AUTOFILL_ENGINE.md`.
+
 ## [0.2.0-alpha] - 2026-07-09
 
 ### Added

@@ -1,0 +1,61 @@
+import { VisaProfile } from '../../profile/types/profile';
+
+export type ProfileKey = keyof Omit<VisaProfile, 'id' | 'isDefault'>;
+
+export const indianVisaFieldMap: Record<string, ProfileKey> = {
+  // Personal Info
+  surname: 'surname',
+  lastname: 'surname',
+  familyname: 'surname',
+  given_name: 'givenName',
+  givenname: 'givenName',
+  firstname: 'givenName',
+  first_name: 'givenName',
+  gender: 'gender',
+  sex: 'gender',
+  dob: 'dob',
+  date_of_birth: 'dob',
+  birth_date: 'dob',
+  pob: 'birthPlace',
+  place_of_birth: 'birthPlace',
+  birthplace: 'birthPlace',
+  nationality: 'nationality',
+  citizen: 'nationality',
+  religion: 'religion',
+  marital_status: 'maritalStatus',
+  marital: 'maritalStatus',
+  occupation: 'occupation',
+  job: 'occupation',
+
+  // Passport Info
+  passport: 'passportNumber',
+  passport_no: 'passportNumber',
+  passport_number: 'passportNumber',
+  passportno: 'passportNumber',
+  issue_date: 'issueDate',
+  passport_issue_date: 'issueDate',
+  issue_place: 'issuePlace',
+  passport_issue_place: 'issuePlace',
+  place_of_issue: 'issuePlace',
+  expiry_date: 'expiryDate',
+  passport_expiry_date: 'expiryDate',
+
+  // Contact Info
+  email: 'email',
+  email_id: 'email',
+  emailid: 'email',
+  phone: 'phone',
+  tel: 'phone',
+  telephone: 'phone',
+  mobile: 'phone',
+  cell: 'phone',
+  country: 'country',
+  city: 'city',
+  town: 'city',
+  address: 'address',
+  street: 'address',
+  postal_code: 'postalCode',
+  zip: 'postalCode',
+  zipcode: 'postalCode',
+  pincode: 'postalCode',
+};
