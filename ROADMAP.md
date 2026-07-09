@@ -1,34 +1,17 @@
-# VisaKit Roadmap
+# VisaKit Product Roadmap
 
-This roadmap details the active development stages and upcoming features planned for VisaKit.
+This document outlines the features and milestones planned for future releases of VisaKit.
 
 ---
 
-## 🚀 Release Versions
+## 🚀 Version 1.0 (Release Candidate & General Availability)
+- [x] **v1.0.0-rc1**: Complete Chrome Store packaging, matching engine decoupling, and options sidebar.
+- [ ] **v1.0.0 (GA)**: Official store launch, browser extension validation checks, and public Next.js website.
 
-### 🟩 Version 0.1 (Completed)
-- Initial environment setups (Manifest V3, React 19, TS, Tailwind CSS v3).
-- Brand icon assets generated (16px, 32px, 48px, 128px PNG).
-- Production-ready popup mockup layout.
-- Next.js 15 landing website with subpages (Docs, FAQ, Download, Privacy).
-- Node CI build workflow pipeline via GitHub Actions.
+---
 
-### 🟩 Version 0.2 (Completed)
-- Modular Profile Management options page app dashboard.
-- Safe CRUD services (`storage.service.ts`, `profile.service.ts`) with transparent fallback compatibility.
-- Decoupled state management hook (`useProfiles`).
-- Advanced schema validation (email formats, alphanumeric passport numbers, phone strings, logical dob/expiry dates).
-- Form inputs split under 300 lines limit.
-
-### 🟩 Version 0.3 (Completed)
-- Autofill Engine MVP matching elements (Name, ID, Autocomplete tags, associated labels, placeholders).
-- Event dispatcher simulator (`input`, `change`, `click`, `blur`) for SPA compatibility.
-- Date translation parser converting standard dates to fit `DD/MM/YYYY` text inputs.
-- Popup-to-tab runtime message brokers.
-- Popup report dialog modal overlay (`AutofillResultModal.tsx`).
-
-### ⬜ Version 1.0 (Upcoming)
-- Profile Import/Export and backup utility.
-- Multi-page form filling coverage on `indianvisaonline.gov.in`.
-- Chrome Web Store deployment.
-- Public release.
+## 📈 Future Milestones (v1.1+)
+*   **Multiple Portal Mappers**: Support other governmental visa portals.
+*   **Encrypted Local Database**: Let users encrypt backup profiles.
+*   **Advanced Date Translation**: Smart parsing for local language date structures.
+*   **Field Highlight Preferences**: Customize visual elements filled color.

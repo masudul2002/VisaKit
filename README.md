@@ -125,6 +125,12 @@ Profiles saved by the user contain the following structured fields:
 
 ---
 
+## 🗺️ Roadmap & Release Candidate
+- **Project Roadmap**: See [ROADMAP.md](ROADMAP.md) for future release milestones.
+- **Release Checklist**: See [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md) for Release Candidate 1 validation criteria.
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

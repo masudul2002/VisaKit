@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-rc1] - 2026-07-09
+
+### Added
+- Promoted build version to Release Candidate 1 (v1.0.0-rc1).
+- Updated manifest version definition to `1.0.0`.
+- Placed Web Store promotional artwork and screenshots under `assets/store/`.
+- Created store metadata logs (`short-description.md`, `long-description.md`, `faq.md`, `release-notes.md`, `keywords.md`, `privacy-summary.md`) inside `store/`.
+- Created release validation checklist `docs/RELEASE_CHECKLIST.md` and product specifications in `ROADMAP.md`.
+
 ## [0.7.0-alpha] - 2026-07-09
 
 ### Added
