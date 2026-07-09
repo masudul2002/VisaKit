@@ -8,8 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.0-alpha] - 2026-07-09
 
 ### Added
-- Standardized issue templates (Bug, Feature, Question) and Pull Request template inside `.github/`.
-- Created comprehensive architecture, setup, development, release, coding standard, and Chrome Store guides in `docs/`.
+- Standardized settings schemas (`types/settings.ts`, `constants/defaults.ts`) to configure themes, languages, and autofill preferences.
+- Built settings handlers (`settings.service.ts`), preferences flags (`preferences.service.ts`), and theme toggles (`theme.service.ts`) watching OS preferences.
+- Designed unified Sidebar Layout in Options dashboard to switch between Profile Dashboard and Settings Page.
+- Implemented settings controls (Language selectors, Theme triggers, Autofill flags, Storage imports/exports, Profile purging, and Factory resets).
+- Created `docs/SETTINGS.md` technical reference.
+- Standardized issue templates (Bug, Feature, Question) and Pull Request templates inside `.github/`.
+- Created architecture, setup, development, release, coding standard, and Chrome Store guides in `docs/`.
 - Added developer prompts (`AI_RULES.md`, `CODING_RULES.md`, `PROJECT_CONTEXT.md`, `SPRINT_TEMPLATE.md`) in `prompts/`.
 - Established root configurations for `.editorconfig` and `.prettierrc`.
 - Written community and safety standards inside `CODE_OF_CONDUCT.md` and `SECURITY.md`.
