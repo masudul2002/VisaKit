@@ -127,7 +127,7 @@ Profiles saved by the user contain the following structured fields:
 
 ## 🗺️ Roadmap & Production Release
 - **Project Roadmap**: See [ROADMAP.md](ROADMAP.md) for future release milestones.
-- **Production Release**: See [docs/FINAL_RELEASE.md](docs/FINAL_RELEASE.md) for release audits and checklist details, and [docs/REFACTOR_REPORT.md](docs/REFACTOR_REPORT.md) for code quality refactors.
+- **Production Release**: See [docs/FINAL_RELEASE.md](docs/FINAL_RELEASE.md) for release audits and checklist details, [docs/CODE_AUDIT_REPORT.md](docs/CODE_AUDIT_REPORT.md) for engineering reports, and [docs/RELEASE_READINESS.md](docs/RELEASE_READINESS.md) for launch readiness metrics.
 
 ---
 
