@@ -30,3 +30,19 @@ We adhere to [Semantic Versioning (SemVer)](https://semver.org/):
     *   Merge `develop` into `main`.
     *   Tag the commit: `git tag -a v[version] -m "Release v[version]"`.
     *   Push main and tags: `git push origin main --tags`.
+
+---
+
+## 📋 Release Checklist
+
+Before marking a version as ready for release:
+- [ ] All local tests pass successfully.
+- [ ] Linter is run and returns zero errors: `npm run lint` in `extension/` and `website/`.
+- [ ] Extension build compiles cleanly: `npm run build` in `extension/`.
+- [ ] Website build compiles cleanly: `npm run build` in `website/`.
+- [ ] Version strings in `extension/package.json` and `extension/public/manifest.json` match.
+- [ ] `CHANGELOG.md` is updated with version release logs.
+- [ ] Merge `develop` into `main` and tag the release version.
+- [ ] Generate the release archive: zip the `extension/dist/` folder.
+- [ ] Create a GitHub Release on the new tag, pasting the release template and attaching the pre-built zip.
+
