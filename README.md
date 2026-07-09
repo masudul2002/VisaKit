@@ -13,6 +13,15 @@ VisaKit is a lightweight, secure Chrome Extension (Manifest V3) designed to help
 
 ---
 
+## ✨ Features
+
+- **Popup Dashboard**: 400x600px professional layout styled with clean typography, gradients, and soft shadows.
+- **Empty State Panel**: Direct interface prompting creation of the first visa profile when local memory is empty.
+- **Quick Action Grid**: Access keys to manage profiles, run form autofills, import backup records, and export profiles.
+- **Dark Mode Ready**: Automatically changes styles based on your system theme preferences.
+
+---
+
 ## 🛠️ Tech Stack
 
 *   **React** (Functional components, Strict Mode)
