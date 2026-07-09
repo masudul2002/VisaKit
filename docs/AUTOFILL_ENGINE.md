@@ -58,6 +58,10 @@ The Indian Visa Portal uses free-form text boxes for date attributes that expect
 
 Our `ValueResolver` inspects input placeholders. If a date field contains a placeholder representing a custom day/month split, it translates standard `YYYY-MM-DD` profiles into `DD/MM/YYYY` or `DD-MM-YYYY` formats dynamically.
 
+## 🌐 Supported Page Checking
+
+To ensure security and keep the script injection scope strictly bounded, the extension executes the `SupportedPageChecker` module before invoking the main fill cycle. This scans the active tab's hostname against the supported `indianvisaonline.gov.in` domain, displaying an error overlay if the extension is clicked on any unsupported external website.
+
 ---
 
 ## 🔒 Security & Privacy
