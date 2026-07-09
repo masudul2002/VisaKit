@@ -1,0 +1,83 @@
+# VisaKit
+
+VisaKit is a lightweight, secure Chrome Extension (Manifest V3) designed to help users securely save their personal visa profiles and autofill online Indian Visa application forms.
+
+---
+
+## 🔒 Security First
+
+*   **100% Local Storage**: All profile data is saved locally on your machine using Chrome's Storage API.
+*   **Zero Server Communication**: We do not send your data to any server. No APIs, no remote databases.
+*   **No Analytics or Tracking**: We do not collect usage metrics, trackers, or telemetry.
+*   **Ethical Automation**: This tool **does not** solve captchas, bypass security measures, or perform automated submissions. It only autofills form fields with your user-provided data.
+
+---
+
+## 🛠️ Tech Stack
+
+*   **React** (Functional components, Strict Mode)
+*   **TypeScript**
+*   **Vite** (Optimized bundling with separate content script compilation)
+*   **TailwindCSS** (Modern utility-first styling)
+*   **Chrome Extension Manifest V3**
+*   **ESLint & Prettier** (Linting & code formatting)
+
+---
+
+## 📂 Repository Structure
+
+```text
+visakit/
+├── extension/          # Chrome Extension source code
+│   ├── public/         # Static assets (icons, manifest.json)
+│   ├── src/            # Extension react & script source
+│   │   ├── popup/      # Extension popup UI (React)
+│   │   ├── options/    # Options/Settings page (React)
+│   │   ├── content/    # Content scripts for DOM autofill
+│   │   ├── storage/    # Chrome Local Storage utilities
+│   │   ├── utils/      # General utilities & helpers
+│   │   └── assets/     # Images, styles, & styling tokens
+│   ├── package.json    # Build commands & dependencies
+│   └── vite.config.ts  # Vite build configuration
+├── docs/               # Architecture, design, and roadmap documents
+├── prompts/            # System & development prompts
+├── assets/             # Brand logos & design assets
+├── LICENSE             # MIT License
+└── README.md           # Project documentation
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+*   Node.js (v18.0.0 or higher)
+*   npm (v9.0.0 or higher)
+
+### Installation & Development
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/masudul2002/visakit.git
+    cd visakit/extension
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Build the extension:
+    ```bash
+    npm run build
+    ```
+4.  Load the extension in Chrome:
+    *   Open Chrome and navigate to `chrome://extensions/`
+    *   Enable **Developer mode** (top-right toggle).
+    *   Click **Load unpacked** (top-left button).
+    *   Select the `visakit/extension/dist` folder.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
