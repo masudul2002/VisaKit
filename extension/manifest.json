@@ -1,14 +1,21 @@
 {
   "manifest_version": 3,
   "name": "VisaKit",
-  "version": "1.0.0",
+  "version": "1.0",
   "description": "Securely save your visa profile and autofill online Indian Visa application forms.",
-  "permissions": ["storage"],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://indianvisaonline.gov.in/*"
+  ],
   "action": {
-    "default_popup": "src/popup/index.html",
+    "default_popup": "index.html",
     "default_title": "VisaKit"
   },
-  "options_page": "src/options/index.html",
+  "options_page": "options.html",
   "content_scripts": [
     {
       "matches": [
