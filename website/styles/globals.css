@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-brand: #2563EB;
+  --color-secondary-brand: #1E40AF;
+  --color-bg-brand: #F8FAFC;
+  --radius-brand: 16px;
+  --font-sans: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--color-bg-brand);
+  color: #0f172a; /* Slate 900 for modern minimal text */
+}
