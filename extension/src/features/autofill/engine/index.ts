@@ -4,3 +4,4 @@ export * from './ValueResolver';
 export * from './FormFiller';
 export * from './Logger';
 export * from './ResultReporter';
+export * from './SupportedPageChecker';

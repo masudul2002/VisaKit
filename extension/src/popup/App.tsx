@@ -5,6 +5,7 @@ import { profileService } from '../features/profile/services/profile.service';
 import { VisaProfile } from '../features/profile/types/profile';
 import { AutofillResultModal } from '../features/autofill/components/AutofillResultModal';
 import { AutofillReport } from '../features/autofill/types/types';
+import { SupportedPageChecker } from '../features/autofill/engine/SupportedPageChecker';
 
 export const App: React.FC = () => {
   const [activeProfile, setActiveProfile] = useState<VisaProfile | null>(null);
@@ -58,7 +59,7 @@ export const App: React.FC = () => {
       }
 
       const url = tab.url || '';
-      if (!url.includes('indianvisaonline.gov.in')) {
+      if (!SupportedPageChecker.isSupported(url)) {
         setError(
           'Autofill is only supported on the official Indian Visa website (indianvisaonline.gov.in).'
         );
