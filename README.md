@@ -13,6 +13,21 @@ VisaKit is a lightweight, secure Chrome Extension (Manifest V3) designed to help
 
 ---
 
+## 🎯 MVP Scope & Non-Goals
+
+### Included in MVP
+- Chrome Extension (Manifest V3) built with React, TypeScript, Vite, and TailwindCSS.
+- Local-only profile storage using Chrome Storage Local API.
+- Secure field mapping and DOM form autofilling for the Indian Visa portal.
+
+### Non-Goals (Out of Scope)
+- No Captcha solving or bypass automation.
+- No Optical Character Recognition (OCR) or document scanning.
+- No AI integration or LLM form-parsing.
+- No remote cloud sync or user log-in system.
+
+---
+
 ## ✨ Features
 
 - **Autofill Engine (MVP)**: Securely populates inputs, textareas, dropdowns, and radio buttons on the Indian Visa Portal, triggered directly from the popup (see [docs/AUTOFILL_ENGINE.md](docs/AUTOFILL_ENGINE.md) for full details).
