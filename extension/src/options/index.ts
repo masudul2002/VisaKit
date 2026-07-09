@@ -1,2 +1,0 @@
-// Options module entry
-export {};

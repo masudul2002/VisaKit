@@ -87,6 +87,27 @@ visakit/
 
 ---
 
+## 📋 Visa Profile Model
+
+Profiles saved by the user contain the following structured fields:
+
+- **Personal Information**:
+  - Surname & Given Name
+  - Gender (`MALE`, `FEMALE`, `TRANSGENDER`)
+  - Date of Birth & Place of Birth
+  - Nationality, Religion, Marital Status (`SINGLE`, `MARRIED`, `DIVORCED`, `WIDOWED`)
+  - Occupation
+- **Passport Information**:
+  - Passport Number (6-12 Alphanumeric characters)
+  - Date of Issue & Date of Expiry (Expiry must be after issue, DOB must be in past)
+  - Place of Issue
+- **Contact Details**:
+  - Email (Standard format check)
+  - Phone (International digit format check)
+  - Street Address, City/Town, Country, Postal/Zip Code
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
