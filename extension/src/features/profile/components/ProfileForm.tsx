@@ -197,6 +197,98 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({ profile, onSubmit, onC
             </div>
           </div>
         </div>
+
+        {/* Section 5: Photo & Signature */}
+        <div className="flex flex-col gap-4 border-t border-slate-900 pt-6">
+          <h3 className="text-sm font-bold text-blue-500 uppercase tracking-wider select-none">
+            5. Photo & Signature Details
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Passport Photo (JPG/PNG)
+              </span>
+              <div className="flex items-center gap-4">
+                {formData.photoData && (
+                  <img
+                    src={formData.photoData}
+                    alt="Passport Photo Preview"
+                    className="w-16 h-16 rounded-xl border border-slate-800 object-cover"
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (event) => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          photoData: event.target?.result as string,
+                        }));
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-slate-300 hover:file:bg-slate-800 cursor-pointer"
+                />
+                {formData.photoData && (
+                  <button
+                    type="button"
+                    onClick={() => setFormData((prev) => ({ ...prev, photoData: undefined }))}
+                    className="text-[11px] font-bold text-red-500 hover:underline cursor-pointer"
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Signature Specimen (PNG/JPG)
+              </span>
+              <div className="flex items-center gap-4">
+                {formData.signatureData && (
+                  <img
+                    src={formData.signatureData}
+                    alt="Signature Preview"
+                    className="w-24 h-10 rounded-xl border border-slate-800 object-contain bg-slate-950 p-1"
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (event) => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          signatureData: event.target?.result as string,
+                        }));
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-slate-300 hover:file:bg-slate-800 cursor-pointer"
+                />
+                {formData.signatureData && (
+                  <button
+                    type="button"
+                    onClick={() => setFormData((prev) => ({ ...prev, signatureData: undefined }))}
+                    className="text-[11px] font-bold text-red-500 hover:underline cursor-pointer"
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Toolbar Buttons */}

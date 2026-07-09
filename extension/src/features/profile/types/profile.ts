@@ -30,4 +30,6 @@ export interface VisaProfile {
   address: string;
   postalCode: string;
   visaType?: string;
+  photoData?: string;
+  signatureData?: string;
 }
