@@ -58,6 +58,14 @@ export const FieldMapper = {
     const parent = el.closest('label');
     if (parent) return parent.textContent;
 
+    const tdParent = el.closest('td');
+    if (tdParent) {
+      const prevSibling = tdParent.previousElementSibling;
+      if (prevSibling && prevSibling.textContent) {
+        return prevSibling.textContent;
+      }
+    }
+
     return null;
   },
 };
