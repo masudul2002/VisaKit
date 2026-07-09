@@ -28,4 +28,5 @@ export const FIELD_REGISTRY: Record<ProfileKey, string[]> = {
   city: ['city', 'town', 'district'],
   country: ['country', 'nation'],
   postalCode: ['postalcode', 'zipcode', 'zip', 'postal_code', 'pin', 'pincode'],
+  visaType: ['visatype', 'type_of_visa', 'visa_type', 'prev_visa_type', 'previous_visa_type', 'visa_type_selected'],
 };

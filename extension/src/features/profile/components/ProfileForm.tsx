@@ -108,7 +108,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({ profile, onSubmit, onC
           <h3 className="text-sm font-bold text-blue-500 uppercase tracking-wider select-none">
             4. Profile Classification
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="category"
@@ -128,6 +128,48 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({ profile, onSubmit, onC
                 <option value="Medical">Medical</option>
                 <option value="Employment">Employment</option>
                 <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="visaType"
+                className="text-xs font-semibold text-slate-400 uppercase tracking-wider"
+              >
+                Visa Type
+              </label>
+              <select
+                id="visaType"
+                name="visaType"
+                value={formData.visaType || 'TOURIST VISA'}
+                onChange={handleChange}
+                className="bg-slate-950 border border-slate-900 rounded-xl px-4 py-3 text-sm text-slate-200 outline-none focus:border-blue-500/50 cursor-pointer"
+              >
+                {[
+                  'BUSINESS VISA',
+                  'CONFERENCE VISA',
+                  'DIPLOMATIC VISA',
+                  'DOUBLE ENTRY',
+                  'EMPLOYMENT VISA',
+                  'ENTRY VISA',
+                  'FILM VISA',
+                  'JOURNALIST VISA',
+                  'MEDICAL VISA',
+                  'MISSIONARY VISA',
+                  'MOUNTAINEERING VISA',
+                  'OFFICIAL VISA',
+                  'PILGRIMS VISA',
+                  'STUDENT VISA',
+                  'TOURIST VISA',
+                  'TRANSIT VISA',
+                  'UN DIPLOMAT',
+                  'UN OFFICIAL',
+                  'VISIT VISA',
+                ].map((vt) => (
+                  <option key={vt} value={vt}>
+                    {vt}
+                  </option>
+                ))}
               </select>
             </div>
 

@@ -29,4 +29,5 @@ export interface VisaProfile {
   city: string;
   address: string;
   postalCode: string;
+  visaType?: string;
 }

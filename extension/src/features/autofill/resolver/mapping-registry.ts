@@ -115,4 +115,25 @@ export const MAPPING_REGISTRY: Record<string, FieldSchema> = {
       return match ? match.value : null;
     },
   },
+  visaType: {
+    label: 'Visa Type',
+    aliases: ['visatype', 'type_of_visa', 'visa_type', 'previous_visa_type', 'prev_visa_type'],
+    type: 'select',
+    resolver: (val, options) => {
+      const norm = val.toUpperCase().trim();
+      const match = options.find(
+        (o) =>
+          o.value.toUpperCase().trim() === norm ||
+          o.text.toUpperCase().trim() === norm
+      );
+      if (match) return match.value;
+
+      const subMatch = options.find(
+        (o) =>
+          o.text.toUpperCase().trim().includes(norm) ||
+          norm.includes(o.text.toUpperCase().trim())
+      );
+      return subMatch ? subMatch.value : null;
+    },
+  },
 };
