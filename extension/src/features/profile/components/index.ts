@@ -9,3 +9,5 @@ export * from './DeleteDialog';
 export * from './ProfileHeader';
 export * from './ProfileToolbar';
 export * from './EmptyState';
+export * from './ConflictDialog';
+

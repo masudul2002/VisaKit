@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useProfiles } from '../hooks/useProfiles';
 import { VisaProfile } from '../types/profile';
 import {
@@ -8,10 +8,15 @@ import {
   ProfileForm,
   DeleteDialog,
   EmptyState,
+  ConflictDialog,
 } from '../components';
+import { exportService } from '../services/export.service';
+import { importService } from '../services/import.service';
+import { backupService } from '../services/backup.service';
 
 export const ProfileDashboard: React.FC = () => {
   const {
+    profiles,
     filteredProfiles,
     searchQuery,
     setSearchQuery,
@@ -22,6 +27,7 @@ export const ProfileDashboard: React.FC = () => {
     deleteProfile,
     duplicateProfile,
     setActiveProfile,
+    reloadProfiles,
   } = useProfiles();
 
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
@@ -29,6 +35,12 @@ export const ProfileDashboard: React.FC = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deletingName, setDeletingName] = useState<string>('');
+
+  const [conflictOpen, setConflictOpen] = useState<boolean>(false);
+  const [conflictCount, setConflictCount] = useState<number>(0);
+  const [pendingProfiles, setPendingProfiles] = useState<VisaProfile[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleNewProfileClick = () => {
     setEditingProfile(null);
@@ -65,6 +77,63 @@ export const ProfileDashboard: React.FC = () => {
     }
     setIsFormOpen(false);
     setEditingProfile(null);
+  };
+
+  const handleExportAll = () => {
+    exportService.exportProfiles(profiles);
+  };
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const text = event.target?.result as string;
+        const validated = importService.parseAndValidate(text);
+
+        const { duplicates } = importService.findConflicts(profiles, validated);
+
+        if (duplicates.length > 0) {
+          setPendingProfiles(validated);
+          setConflictCount(duplicates.length);
+          setConflictOpen(true);
+        } else {
+          await backupService.mergeBackup(validated);
+          await reloadProfiles();
+          alert('Profiles imported successfully!');
+        }
+      } catch (err) {
+        alert(err instanceof Error ? err.message : 'Import failed.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
+  const handleMergeConfirm = async () => {
+    await backupService.mergeBackup(pendingProfiles);
+    setConflictOpen(false);
+    await reloadProfiles();
+    alert('Unique profiles imported successfully!');
+  };
+
+  const handleReplaceConfirm = async () => {
+    if (
+      confirm(
+        'Are you absolutely sure? This will delete all your local profiles and replace them with the backup file data.'
+      )
+    ) {
+      await backupService.replaceBackup(pendingProfiles);
+      setConflictOpen(false);
+      await reloadProfiles();
+      alert('Profiles replaced successfully!');
+    }
   };
 
   return (
@@ -114,6 +183,8 @@ export const ProfileDashboard: React.FC = () => {
             onSearchChange={setSearchQuery}
             onNewProfile={handleNewProfileClick}
             showCreateButton={filteredProfiles.length > 0 || searchQuery !== ''}
+            onExportAll={handleExportAll}
+            onImport={handleImportClick}
           />
 
           {filteredProfiles.length === 0 ? (
@@ -125,16 +196,33 @@ export const ProfileDashboard: React.FC = () => {
               onDelete={handleDeleteClick}
               onDuplicate={duplicateProfile}
               onSetActive={setActiveProfile}
+              onExport={exportService.exportSingleProfile}
             />
           )}
         </div>
       )}
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept=".json"
+        className="hidden"
+      />
 
       <DeleteDialog
         isOpen={isDeleteOpen}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setIsDeleteOpen(false)}
         profileName={deletingName}
+      />
+
+      <ConflictDialog
+        isOpen={conflictOpen}
+        duplicateCount={conflictCount}
+        onMerge={handleMergeConfirm}
+        onReplace={handleReplaceConfirm}
+        onCancel={() => setConflictOpen(false)}
       />
     </div>
   );

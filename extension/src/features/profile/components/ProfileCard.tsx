@@ -7,6 +7,7 @@ interface ProfileCardProps {
   onDelete: (id: string) => void;
   onDuplicate: (id: string) => void;
   onSetActive: (id: string) => void;
+  onExport: (profile: VisaProfile) => void;
 }
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -15,6 +16,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   onDelete,
   onDuplicate,
   onSetActive,
+  onExport,
 }) => {
   return (
     <div
@@ -91,6 +93,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           aria-label={`Duplicate ${profile.givenName}`}
         >
           Duplicate
+        </button>
+        <button
+          onClick={() => onExport(profile)}
+          className="text-xs font-bold text-slate-400 hover:text-white px-2 py-1 rounded-lg transition-colors cursor-pointer"
+          aria-label={`Export ${profile.givenName}`}
+        >
+          Export
         </button>
         <button
           onClick={() => onDelete(profile.id)}

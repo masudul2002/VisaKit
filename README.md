@@ -15,10 +15,11 @@ VisaKit is a lightweight, secure Chrome Extension (Manifest V3) designed to help
 
 ## ✨ Features
 
-- **Autofill Engine (MVP)**: Securely populates inputs, textareas, dropdowns, and radio buttons on the Indian Visa Portal, triggered directly from the popup (see [docs/AUTOFILL_ENGINE.md](docs/AUTOFILL_ENGINE.md) for full details).
+- **Reusable Field Mapping Engine**: Decoupled, fuzzy-matching engine mapping profile keys to HTML inputs, dropdowns, textareas, and radio buttons using a six-priority attribute/label checklist (see [docs/FIELD_MAPPING_ENGINE.md](docs/FIELD_MAPPING_ENGINE.md)).
 - **Profile Management Dashboard**: Options page app managing multiple profiles (create, edit, delete, duplicate, search, set active profile) with strict schema validation.
+- **Settings & Preferences Dashboard**: Unified settings panel managing languages, themes (light/dark/system), autofill configurations, local backup imports/exports, and factory resets (see [docs/SETTINGS.md](docs/SETTINGS.md)).
 - **Extension Popup Dashboard**: 400x600px SaaS-style control panel showing active profile status, quick actions, and execution reports.
-- **Dark Mode Ready**: Automatically adapts styles based on system preferences.
+- **Autofill Execution Engine**: Safe, local sandboxed orchestrator reading profiles, detecting visa portals, mapping inputs, and displaying execution summaries (see [docs/AUTOFILL_EXECUTION.md](docs/AUTOFILL_EXECUTION.md)).
 
 ---
 

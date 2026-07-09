@@ -5,11 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0-alpha] - 2026-07-09
+
+### Added
+- Integrated execution flow components (`SupportedPageDetector.ts`, `ExecutionLogger.ts`, `AutofillExecutor.ts`, `ExecutionController.ts`).
+- Created summary component (`ExecutionSummary.tsx`) reporting matches, fills, skips, failures, and execution timings.
+- Mounted dynamic "Autofill Now" buttons and spinner loader status indicators in the popup card.
+- Documented execution structures inside `docs/AUTOFILL_EXECUTION.md`.
+
+## [0.5.0-alpha] - 2026-07-09
+
+### Added
+- Reusable, generic Field Mapping Engine decoupled from hardcoded web selectors.
+- Built alias registry (`FieldRegistry.ts`) and fuzzy normalization utility (`Normalizer.ts`).
+- Created matching elements (`AttributeMatcher.ts`, `LabelMatcher.ts`, `PlaceholderMatcher.ts`) handling name, id, autocomplete, labels, placeholders, and aria-labels.
+- Refactored `FieldMapper` to execute the new 6-priority checklist order.
+- Refactored `ValueResolver` to delegate values formatting to the new generic `Resolver` module.
+- Created `docs/FIELD_MAPPING_ENGINE.md` architectural reference.
+
 ## [0.4.0-alpha] - 2026-07-09
 
 ### Added
-- Standardized issue templates (Bug, Feature, Question) and Pull Request template inside `.github/`.
-- Created comprehensive architecture, setup, development, release, coding standard, and Chrome Store guides in `docs/`.
+- Standardized settings schemas (`types/settings.ts`, `constants/defaults.ts`) to configure themes, languages, and autofill preferences.
+- Built settings handlers (`settings.service.ts`), preferences flags (`preferences.service.ts`), and theme toggles (`theme.service.ts`) watching OS preferences.
+- Designed unified Sidebar Layout in Options dashboard to switch between Profile Dashboard and Settings Page.
+- Implemented settings controls (Language selectors, Theme triggers, Autofill flags, Storage imports/exports, Profile purging, and Factory resets).
+- Created `docs/SETTINGS.md` technical reference.
+- Standardized issue templates (Bug, Feature, Question) and Pull Request templates inside `.github/`.
+- Created architecture, setup, development, release, coding standard, and Chrome Store guides in `docs/`.
 - Added developer prompts (`AI_RULES.md`, `CODING_RULES.md`, `PROJECT_CONTEXT.md`, `SPRINT_TEMPLATE.md`) in `prompts/`.
 - Established root configurations for `.editorconfig` and `.prettierrc`.
 - Written community and safety standards inside `CODE_OF_CONDUCT.md` and `SECURITY.md`.

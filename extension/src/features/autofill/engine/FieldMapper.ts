@@ -1,53 +1,34 @@
-import { indianVisaFieldMap, ProfileKey } from '../mappers/indianVisaMap';
+import { ProfileKey } from '../mapping/FieldRegistry';
 import { ScannedElement } from './DOMScanner';
+import { AttributeMatcher } from '../matcher/AttributeMatcher';
+import { LabelMatcher } from '../matcher/LabelMatcher';
+import { PlaceholderMatcher } from '../matcher/PlaceholderMatcher';
 
 export const FieldMapper = {
   mapField: (el: ScannedElement): ProfileKey | null => {
     const nameAttr = el.getAttribute('name');
-    if (nameAttr) {
-      const match = FieldMapper.findMatch(nameAttr);
-      if (match) return match;
-    }
+    let match = AttributeMatcher.match(nameAttr);
+    if (match) return match;
 
     const idAttr = el.getAttribute('id');
-    if (idAttr) {
-      const match = FieldMapper.findMatch(idAttr);
-      if (match) return match;
-    }
+    match = AttributeMatcher.match(idAttr);
+    if (match) return match;
 
     const autocompleteAttr = el.getAttribute('autocomplete');
-    if (autocompleteAttr) {
-      const match = FieldMapper.findMatch(autocompleteAttr);
-      if (match) return match;
-    }
+    match = AttributeMatcher.match(autocompleteAttr);
+    if (match) return match;
 
     const labelText = FieldMapper.getLabelText(el);
-    if (labelText) {
-      const match = FieldMapper.findMatch(labelText);
-      if (match) return match;
-    }
+    match = LabelMatcher.match(labelText);
+    if (match) return match;
 
     const placeholderAttr = el.getAttribute('placeholder');
-    if (placeholderAttr) {
-      const match = FieldMapper.findMatch(placeholderAttr);
-      if (match) return match;
-    }
+    match = PlaceholderMatcher.match(placeholderAttr);
+    if (match) return match;
 
-    return null;
-  },
-
-  findMatch: (str: string): ProfileKey | null => {
-    const cleanStr = str.toLowerCase().replace(/[^a-z0-9_]/g, '');
-
-    if (indianVisaFieldMap[cleanStr]) {
-      return indianVisaFieldMap[cleanStr];
-    }
-
-    for (const key of Object.keys(indianVisaFieldMap)) {
-      if (cleanStr.includes(key) || key.includes(cleanStr)) {
-        return indianVisaFieldMap[key];
-      }
-    }
+    const ariaLabel = el.getAttribute('aria-label');
+    match = LabelMatcher.match(ariaLabel);
+    if (match) return match;
 
     return null;
   },
