@@ -125,9 +125,9 @@ Profiles saved by the user contain the following structured fields:
 
 ---
 
-## 🗺️ Roadmap & Release Candidate
+## 🗺️ Roadmap & Production Release
 - **Project Roadmap**: See [ROADMAP.md](ROADMAP.md) for future release milestones.
-- **Release Checklist**: See [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md) for Release Candidate 1 validation criteria.
+- **Production Release**: See [docs/FINAL_RELEASE.md](docs/FINAL_RELEASE.md) for release audits and checklist details.
 
 ---
 

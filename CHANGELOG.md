@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-07-09
+
+### Added
+- Promoted build version to official Production Release (v1.0.0).
+- Packaged and compressed `visakit-v1.0.0.zip` for Developer Console uploads.
+- Prepared Web Store checklists (`submission-checklist.md`, `release-guide.md`, `known-limitations.md`, and `store-listing.md`) under `store/`.
+- Verified Next.js website routes compile for static hosts.
+- Created `docs/FINAL_RELEASE.md` release reports.
+
 ## [1.0.0-rc1] - 2026-07-09
 
 ### Added
