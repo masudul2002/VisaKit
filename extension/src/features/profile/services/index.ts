@@ -5,4 +5,5 @@ export * from './import.service';
 export * from './backup.service';
 export * from './encryption';
 export * from './pdf.service';
+export * from './mrz.service';
 
