@@ -3,15 +3,15 @@ import { Layout, Container, Header, Footer, Section } from './layout';
 import { Card, EmptyState } from './components';
 import { profileService } from '../features/profile/services/profile.service';
 import { VisaProfile } from '../features/profile/types/profile';
-import { AutofillResultModal } from '../features/autofill/components/AutofillResultModal';
 import { AutofillReport } from '../features/autofill/types/types';
-import { SupportedPageChecker } from '../features/autofill/engine/SupportedPageChecker';
+import { ExecutionController, ExecutionSummary } from '../features/autofill/execution';
 
 export const App: React.FC = () => {
   const [activeProfile, setActiveProfile] = useState<VisaProfile | null>(null);
   const [isResultOpen, setIsResultOpen] = useState<boolean>(false);
   const [report, setReport] = useState<AutofillReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isAutofilling, setIsAutofilling] = useState<boolean>(false);
 
   useEffect(() => {
     const loadActiveProfile = async () => {
@@ -37,59 +37,15 @@ export const App: React.FC = () => {
   const handleAutofill = async () => {
     setError(null);
     setReport(null);
-
-    if (!activeProfile) {
-      setError('Please create and select an active profile in settings first.');
-      setIsResultOpen(true);
-      return;
-    }
-
-    if (typeof chrome === 'undefined' || !chrome.tabs) {
-      setError('Autofill can only be executed inside the Chrome Extension context.');
-      setIsResultOpen(true);
-      return;
-    }
+    setIsAutofilling(true);
 
     try {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (!tab || !tab.id) {
-        setError('No active browser tab found.');
-        setIsResultOpen(true);
-        return;
-      }
-
-      const url = tab.url || '';
-      if (!SupportedPageChecker.isSupported(url)) {
-        setError(
-          'Autofill is only supported on the official Indian Visa website (indianvisaonline.gov.in).'
-        );
-        setIsResultOpen(true);
-        return;
-      }
-
-      chrome.tabs.sendMessage(
-        tab.id,
-        { action: 'AUTOFILL', profile: activeProfile },
-        (response) => {
-          if (chrome.runtime.lastError) {
-            console.error('Messaging error:', chrome.runtime.lastError);
-            setError(
-              'Autofill script is not loaded on this tab. Please refresh the page and try again.'
-            );
-            setIsResultOpen(true);
-            return;
-          }
-
-          if (response) {
-            setReport(response);
-          } else {
-            setError('Autofill engine returned an empty response.');
-          }
-          setIsResultOpen(true);
-        }
-      );
+      const response = await ExecutionController.triggerAutofill();
+      setReport(response);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+    } finally {
+      setIsAutofilling(false);
       setIsResultOpen(true);
     }
   };
@@ -122,12 +78,46 @@ export const App: React.FC = () => {
                   </div>
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 flex shrink-0" />
                 </div>
-                <button
-                  onClick={handleOpenOptions}
-                  className="w-full py-2 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700/80 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs transition-colors cursor-pointer"
-                >
-                  Manage Profiles
-                </button>
+                <div className="flex gap-2.5 mt-1">
+                  <button
+                    onClick={handleOpenOptions}
+                    className="flex-1 py-2 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700/80 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs transition-colors cursor-pointer"
+                  >
+                    Manage
+                  </button>
+                  <button
+                    onClick={handleAutofill}
+                    disabled={isAutofilling}
+                    className="flex-1 py-2 bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-xl text-xs shadow-md shadow-blue-500/10 transition-all cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isAutofilling ? (
+                      <>
+                        <svg
+                          className="animate-spin h-3.5 w-3.5 text-white"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
+                        </svg>
+                        Filling...
+                      </>
+                    ) : (
+                      'Autofill Now'
+                    )}
+                  </button>
+                </div>
               </div>
             ) : (
               <EmptyState onCreateProfile={handleOpenOptions} />
@@ -204,12 +194,9 @@ export const App: React.FC = () => {
         <Footer />
       </Container>
 
-      <AutofillResultModal
-        isOpen={isResultOpen}
-        report={report}
-        error={error}
-        onClose={() => setIsResultOpen(false)}
-      />
+      {isResultOpen && (
+        <ExecutionSummary report={report} error={error} onClose={() => setIsResultOpen(false)} />
+      )}
     </Layout>
   );
 };

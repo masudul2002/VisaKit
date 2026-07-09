@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0-alpha] - 2026-07-09
+
+### Added
+- Integrated execution flow components (`SupportedPageDetector.ts`, `ExecutionLogger.ts`, `AutofillExecutor.ts`, `ExecutionController.ts`).
+- Created summary component (`ExecutionSummary.tsx`) reporting matches, fills, skips, failures, and execution timings.
+- Mounted dynamic "Autofill Now" buttons and spinner loader status indicators in the popup card.
+- Documented execution structures inside `docs/AUTOFILL_EXECUTION.md`.
+
 ## [0.5.0-alpha] - 2026-07-09
 
 ### Added
