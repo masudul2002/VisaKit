@@ -5,6 +5,7 @@ import { profileService } from '../features/profile/services/profile.service';
 import { VisaProfile } from '../features/profile/types/profile';
 import { AutofillReport } from '../features/autofill/types/types';
 import { ExecutionController, ExecutionSummary } from '../features/autofill/execution';
+import { useToast, showToast } from '../hooks/useToast';
 
 export const App: React.FC = () => {
   const [activeProfile, setActiveProfile] = useState<VisaProfile | null>(null);
@@ -13,7 +14,7 @@ export const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isAutofilling, setIsAutofilling] = useState<boolean>(false);
 
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'warning' | 'error' } | null>(null);
+  const { toasts, dismissToast } = useToast();
   const [progress, setProgress] = useState<number>(0);
   const [showProgress, setShowProgress] = useState<boolean>(false);
 
@@ -89,16 +90,11 @@ export const App: React.FC = () => {
       clearInterval(interval);
       setProgress(100);
       setReport(response);
-      setToast({ message: 'Autofill completed successfully!', type: 'success' });
-      setTimeout(() => setToast(null), 3000);
+      showToast('Autofill completed successfully!', 'success');
     } catch (err) {
       clearInterval(interval);
       setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
-      setToast({
-        message: err instanceof Error ? err.message : 'Autofill failed.',
-        type: 'error',
-      });
-      setTimeout(() => setToast(null), 3500);
+      showToast(err instanceof Error ? err.message : 'Autofill failed.', 'error');
     } finally {
       setIsAutofilling(false);
       setShowProgress(false);
@@ -107,8 +103,7 @@ export const App: React.FC = () => {
   };
 
   const handleActionPlaceholder = (actionName: string) => {
-    setToast({ message: `${actionName} action triggered.`, type: 'success' });
-    setTimeout(() => setToast(null), 2000);
+    showToast(`${actionName} action triggered.`, 'success');
   };
 
   if (isLocked) {
@@ -157,22 +152,30 @@ export const App: React.FC = () => {
 
   return (
     <Layout>
-      {toast && (
+      {toasts.map((t, idx) => (
         <div
-          className={`fixed top-14 left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl text-xs font-bold shadow-lg border transition-all z-50 flex items-center gap-2 select-none animate-bounce ${
-            toast.type === 'success'
+          key={t.id}
+          className={`fixed left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl text-xs font-bold shadow-lg border transition-all z-50 flex items-center gap-2 select-none animate-bounce ${
+            t.type === 'success'
               ? 'bg-emerald-600/10 border-emerald-500/30 text-emerald-400'
-              : toast.type === 'warning'
+              : t.type === 'warning'
                 ? 'bg-amber-600/10 border-amber-500/30 text-amber-400'
                 : 'bg-red-600/10 border-red-500/30 text-red-400'
           }`}
+          style={{ top: `${56 + idx * 44}px` }}
         >
           <span>
-            {toast.type === 'success' ? '✓' : toast.type === 'warning' ? '⚠' : '✗'}
+            {t.type === 'success' ? '✓' : t.type === 'warning' ? '⚠' : '✗'}
           </span>
-          <span>{toast.message}</span>
+          <span>{t.message}</span>
+          <button
+            onClick={() => dismissToast(t.id)}
+            className="ml-2 opacity-50 hover:opacity-100 font-extrabold focus:outline-none"
+          >
+            ×
+          </button>
         </div>
-      )}
+      ))}
 
       <Header />
 
