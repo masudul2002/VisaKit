@@ -12,6 +12,7 @@ export const ResultReporter = {
     let filled = 0;
     let skipped = 0;
     let failed = 0;
+    let matched = 0;
 
     try {
       Logger.info('Autofill engine started scanning DOM.');
@@ -19,23 +20,29 @@ export const ResultReporter = {
       Logger.info(`Found ${elements.length} potential form fields.`);
 
       for (const el of elements) {
-        const key = FieldMapper.mapField(el);
-        if (!key) {
-          skipped++;
-          continue;
-        }
+        try {
+          const key = FieldMapper.mapField(el);
+          if (!key) {
+            skipped++;
+            continue;
+          }
+          matched++;
 
-        const resolvedVal = ValueResolver.resolveValue(el, key, profile);
-        if (resolvedVal === null || resolvedVal === undefined) {
-          skipped++;
-          continue;
-        }
+          const resolvedVal = ValueResolver.resolveValue(el, key, profile);
+          if (resolvedVal === null || resolvedVal === undefined) {
+            skipped++;
+            continue;
+          }
 
-        const didFill = FormFiller.fill(el, resolvedVal);
-        if (didFill) {
-          filled++;
-        } else {
-          skipped++;
+          const didFill = FormFiller.fill(el, resolvedVal);
+          if (didFill) {
+            filled++;
+          } else {
+            skipped++;
+          }
+        } catch (fieldError) {
+          Logger.error('Failed to process individual form field:', fieldError);
+          failed++;
         }
       }
     } catch (err) {
@@ -44,9 +51,12 @@ export const ResultReporter = {
     }
 
     const elapsed = Math.round(performance.now() - startTime);
-    Logger.info(`Autofill finished: ${filled} filled, ${skipped} skipped, ${failed} failed in ${elapsed}ms.`);
+    Logger.info(
+      `Autofill finished: ${matched} matched, ${filled} filled, ${skipped} skipped, ${failed} failed in ${elapsed}ms.`
+    );
 
     return {
+      matched,
       filled,
       skipped,
       failed,

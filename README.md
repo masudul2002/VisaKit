@@ -20,6 +20,7 @@ VisaKit is a lightweight, secure Chrome Extension (Manifest V3) designed to help
 - **Settings & Preferences Dashboard**: Unified settings panel managing languages, themes (light/dark/system), autofill configurations, local backup imports/exports, and factory resets (see [docs/SETTINGS.md](docs/SETTINGS.md)).
 - **Extension Popup Dashboard**: 400x600px SaaS-style control panel showing active profile status, quick actions, and execution reports.
 - **Autofill Execution Engine**: Safe, local sandboxed orchestrator reading profiles, detecting visa portals, mapping inputs, and displaying execution summaries (see [docs/AUTOFILL_EXECUTION.md](docs/AUTOFILL_EXECUTION.md)).
+- **Production Hardened**: Memory-cached selectors (`WeakMap`), field error try/catch isolate loops, and Edge/Brave/Chrome compatibility normalizations (see [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and [docs/PRODUCTION_CHECKLIST.md](docs/PRODUCTION_CHECKLIST.md)).
 
 ---
 

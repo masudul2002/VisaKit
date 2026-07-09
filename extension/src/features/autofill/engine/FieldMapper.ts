@@ -4,8 +4,19 @@ import { AttributeMatcher } from '../matcher/AttributeMatcher';
 import { LabelMatcher } from '../matcher/LabelMatcher';
 import { PlaceholderMatcher } from '../matcher/PlaceholderMatcher';
 
+const mappingCache = new WeakMap<Element, ProfileKey | null>();
+
 export const FieldMapper = {
   mapField: (el: ScannedElement): ProfileKey | null => {
+    if (mappingCache.has(el)) {
+      return mappingCache.get(el) || null;
+    }
+    const match = FieldMapper.resolveField(el);
+    mappingCache.set(el, match);
+    return match;
+  },
+
+  resolveField: (el: ScannedElement): ProfileKey | null => {
     const nameAttr = el.getAttribute('name');
     let match = AttributeMatcher.match(nameAttr);
     if (match) return match;

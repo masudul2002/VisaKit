@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0-alpha] - 2026-07-09
+
+### Added
+- Hardened form filling loop with try/catch boundaries to safely recover from individual field errors.
+- Introduced `WeakMap` caching mechanism in `FieldMapper` to prevent redundant DOM checks and accelerate scan speeds.
+- Extended the `ResultReporter` autofill report payload with accurate `matched` count metrics.
+- Created `docs/PRODUCTION_CHECKLIST.md` and `docs/COMPATIBILITY.md`.
+
 ## [0.6.0-alpha] - 2026-07-09
 
 ### Added
