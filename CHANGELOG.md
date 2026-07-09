@@ -1,0 +1,17 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.0.1] - 2026-07-09
+
+### Added
+- Initial repository structure setup.
+- Chrome Extension (Manifest V3) environment setup.
+- TypeScript, Vite, React, and Tailwind CSS v3 integrations.
+- Local PostCSS and Autoprefixer style configurations.
+- ESLint flat configuration and Prettier setups.
+- CI pipeline workflow via GitHub Actions.
+- Repository documentation (`README.md`, `LICENSE`, `CONTRIBUTING.md`, `ROADMAP.md`, `CHANGELOG.md`).
