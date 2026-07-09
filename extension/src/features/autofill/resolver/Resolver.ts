@@ -1,6 +1,7 @@
 import { ScannedElement } from '../engine/DOMScanner';
 import { ProfileKey } from '../mapping/FieldRegistry';
 import { VisaProfile } from '../../profile/types/profile';
+import { MAPPING_REGISTRY } from './mapping-registry';
 
 export const Resolver = {
   resolve: (
@@ -15,7 +16,18 @@ export const Resolver = {
 
     if (tagName === 'SELECT') {
       const selectEl = el as HTMLSelectElement;
-      const normVal = String(value).toLowerCase().trim();
+      const valStr = String(value);
+
+      const schema = MAPPING_REGISTRY[key];
+      if (schema && schema.resolver) {
+        const optionsArray = Array.from(selectEl.options);
+        const resolved = schema.resolver(valStr, optionsArray);
+        if (resolved !== null) {
+          return resolved;
+        }
+      }
+
+      const normVal = valStr.toLowerCase().trim();
 
       for (let i = 0; i < selectEl.options.length; i++) {
         const opt = selectEl.options[i];
