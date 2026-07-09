@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0-alpha] - 2026-07-09
+
+### Added
+- Standardized issue templates (Bug, Feature, Question) and Pull Request template inside `.github/`.
+- Created comprehensive architecture, setup, development, release, coding standard, and Chrome Store guides in `docs/`.
+- Added developer prompts (`AI_RULES.md`, `CODING_RULES.md`, `PROJECT_CONTEXT.md`, `SPRINT_TEMPLATE.md`) in `prompts/`.
+- Established root configurations for `.editorconfig` and `.prettierrc`.
+- Written community and safety standards inside `CODE_OF_CONDUCT.md` and `SECURITY.md`.
+
 ## [0.3.0-alpha] - 2026-07-09
 
 ### Added

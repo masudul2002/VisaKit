@@ -1,45 +1,43 @@
-# VisaKit System Architecture
+# Architecture Reference
 
-This document describes the high-level architecture of VisaKit, a Manifest V3 Chrome Extension.
-
-## Components Overview
-
-### 1. Options Page (React App)
-- Serves as the primary configuration dashboard and profile manager.
-- Features a secure settings layout built with React and Tailwind CSS.
-- Permits input of visa applicant profiles (e.g. Personal Details, Passport Info, Contact Info, Family Details, Address, Previous Visa).
-- Persists all configuration states into Chrome's Local Storage via the `chrome.storage.local` API.
-
-### 2. Popup Page (React App)
-- Serves as the quick-action interface displayed upon clicking the extension badge.
-- Shows current security audits (e.g. data locally stored) and indicates if an Indian Visa application form is detected on the active tab.
-- Provides a quick action to launch the full Profile Manager Options page.
-
-### 3. Content Scripts (TypeScript iife build)
-- Sandboxed DOM script injected into `indianvisaonline.gov.in/*` matches.
-- Reads user-saved profile properties from `chrome.storage.local` memory.
-- Performs automated, secure form filling for matching input text, select dropdowns, and datepickers.
-- Operates entirely locally. Does not intercept network calls or upload inputs to any external endpoint.
+This document describes the architectural layout of VisaKit.
 
 ---
 
-## Data flow Diagram
+## 🏛️ System Overview
+
+VisaKit operates as a decoupled local-first system within the browser sandbox:
 
 ```text
-+-----------------------+              +------------------------+
-|   Options UI (React)  |              |    Popup UI (React)    |
-+-----------+-----------+              +-----------+------------+
-            |                                      |
-            | write                                | query status
-            v                                      v
-  +------------------+                   +------------------+
-  |  Chrome Storage  | <---------------- |  Content Script  |
-  |     (Local)      |      read         |  (DOM Inject)    |
-  +------------------+                   +---------+--------+
-                                                   |
-                                                   | fills
-                                                   v
-                                         +------------------+
-                                         | Indian Visa Form |
-                                         +------------------+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                             VisaKit Extension                            │
+│                                                                          │
+│  ┌───────────────────────┐              ┌─────────────────────────────┐  │
+│  │       Popup App       │              │     Options Dashboard       │  │
+│  │ (Trigger Autofill UI) │              │  (Profile Creation/CRUD)    │  │
+│  └───────────┬───────────┘              └──────────────┬──────────────┘  │
+│              │ (Messaging)                             │                 │
+│              ▼                                         ▼                 │
+│  ┌───────────────────────┐              ┌─────────────────────────────┐  │
+│  │    Content Script     │─────────────►│    chrome.storage.local     │  │
+│  │ (DOM Autofill Engine) │ (Reads active│    (Secure Local Storage)   │  │
+│  └───────────────────────┘   profile)   └─────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🧩 Architectural Modules
+
+1.  **Popup Dashboard (`src/popup/`)**:
+    *   Saves size parameters at exactly `400x600px`.
+    *   Exposes a clean list of action cards (Autofill, Settings, Import, Export).
+    *   Queries active tab states and dispatches cross-context runtime messages.
+2.  **Options Manager (`src/options/`)**:
+    *   Bootstraps a complete profile grid dashboard.
+    *   Provides inputs mapped to schema keys, managing validation warning states.
+3.  **Profile Feature (`src/features/profile/`)**:
+    *   Encapsulates types, validators, hooks, services, and subcomponents for user profiles.
+4.  **Autofill Feature (`src/features/autofill/`)**:
+    *   Runs the automation engine: DOMScanner, FieldMapper, ValueResolver, and FormFiller.
+    *   Communicates results back to the popup using reports.

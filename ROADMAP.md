@@ -4,36 +4,31 @@ This roadmap details the active development stages and upcoming features planned
 
 ---
 
-## 🗺️ Sprint Plan
+## 🚀 Release Versions
 
-### 🟩 Sprint 00: Project Foundation (Completed)
-- Initialize project structure, LICENSE, and README files.
+### 🟩 Version 0.1 (Completed)
+- Initial environment setups (Manifest V3, React 19, TS, Tailwind CSS v3).
+- Brand icon assets generated (16px, 32px, 48px, 128px PNG).
+- Production-ready popup mockup layout.
+- Next.js 15 landing website with subpages (Docs, FAQ, Download, Privacy).
+- Node CI build workflow pipeline via GitHub Actions.
 
-### 🟩 Sprint 01: Environment Setup (Completed)
-- Establish Vite, React, TypeScript, and TailwindCSS v3 configurations.
-- Verify extension load and popup rendering.
+### 🟩 Version 0.2 (Completed)
+- Modular Profile Management options page app dashboard.
+- Safe CRUD services (`storage.service.ts`, `profile.service.ts`) with transparent fallback compatibility.
+- Decoupled state management hook (`useProfiles`).
+- Advanced schema validation (email formats, alphanumeric passport numbers, phone strings, logical dob/expiry dates).
+- Form inputs split under 300 lines limit.
 
-### 🟩 Sprint 02: Project Bootstrap (Active)
-- Finalize folder structures.
-- Add repository documents (`CHANGELOG.md`, `CONTRIBUTING.md`, `ROADMAP.md`).
-- Configure GitHub Actions CI workflow.
+### 🟩 Version 0.3 (Completed)
+- Autofill Engine MVP matching elements (Name, ID, Autocomplete tags, associated labels, placeholders).
+- Event dispatcher simulator (`input`, `change`, `click`, `blur`) for SPA compatibility.
+- Date translation parser converting standard dates to fit `DD/MM/YYYY` text inputs.
+- Popup-to-tab runtime message brokers.
+- Popup report dialog modal overlay (`AutofillResultModal.tsx`).
 
-### ⬜ Sprint 03: Profile Form UI
-- Design options dashboard and forms for entering visa applicant profiles.
-- Support core sections: Personal Details, Passport Info, Contact Info, Address.
-
-### ⬜ Sprint 04: Local Storage Integration
-- Integrate options form with Chrome local storage.
-- Support profile import, export, and secure reset.
-
-### ⬜ Sprint 05: Content Script & Autofill Engine
-- Implement DOM selectors and matching functions for Indian Visa portal inputs.
-- Hook triggers to initiate form filling.
-
-### ⬜ Sprint 06: Form Mapping & Verification
-- Map fields for multi-page application flows on `indianvisaonline.gov.in`.
-- Conduct edge case checks and error handling.
-
-### ⬜ Sprint 07: Chrome Web Store Prep
-- Design assets, promotional tiles, and store copy.
-- Package extension and perform final store validation.
+### ⬜ Version 1.0 (Upcoming)
+- Profile Import/Export and backup utility.
+- Multi-page form filling coverage on `indianvisaonline.gov.in`.
+- Chrome Web Store deployment.
+- Public release.
